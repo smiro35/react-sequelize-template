@@ -1,22 +1,25 @@
 import React, { useContext } from "react";
-import { Route, Switch, BrowserRouter as Router, Redirect } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./AuthContext";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Members from "./pages/Members";
+import { AuthProvider, AuthContext } from './AuthContext'
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import Home from "./pages/Home/Home";
+import Dashboard from "./pages/Home/Home";
+import NoMatch from "./pages/Messages/Messages";
+import MyData from "./pages/Store/Store";
+import Login from "./pages/Home/Home";
+// import Signup from "./components/SingupForm";
+// import TablePage from "./pages/TablePage/TablePage.js";
+// import Members from './pages/Home/Members'
+import Header from "./components/Header";
 
-// Even though this is the App.js file, in the end we are not exactly exporting
-// the App component.  We actually set up the app component to implement our react
-// router, but in the end we export App wrapped in the context provider
-
-function App() {
-  // Here we subscribe the authentication context using the useContext hook
-  // we use isAuth to determine whether the user is logged in, and setIsAuth
-  // to change their status on logout.
-  const { isAuth, setIsAuth } = useContext(AuthContext);
-  console.log("App auth: ", isAuth);
-
+// import { AuthProvider } from './AuthContext'
+function App(){
+  
+    // Here we subscribe the authentication context using the useContext hook
+    // we use isAuth to determine whether the user is logged in, and setIsAuth
+    // to change their status on logout.
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+    console.log("App auth: ", isAuth)
+  
   // here we are ceating a private route wrapper to prevent front end routing to 
   // restricted pages.  The ({ component: Component, ...rest })  argument that is
   // passed to this functional component is essentially the same as just passing 
@@ -26,33 +29,35 @@ function App() {
     <Route
       {...rest}
       render={props =>
-        isAuth ? <Component {...props} /> : <Redirect to="/login" />
+        isAuth ? <Component {...props} /> : <Redirect to='/' />
+        
       }
     />
   );
-
   return (
-    <Router>
-      <Switch>
+     
+      <Router>
+        <Switch>
         <Route
           exact
           path="/"
-          render={props => <Home {...props} />}
+          render={props => <Login {...props} />}
         />
-        <Route exact path="/login" render={props => <Login {...props} />} />
-        <Route exact path="/signup" render={props => <Signup {...props} />} />
-        <PrivateRoute exact path="/members" component={Members} />
-      </Switch>
-    </Router>
-  );
-}
-
-// Here we export the final product of our app/context configuration, and
-// even though it is unnamed here, it will be imported as App in index.js
-export default () => {
-  return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  );
+        
+          <Route exact path="/Login" component={Login} />
+          {/* <Route exact path="/signup" component={Signup} /> */}
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          {/* <PrivateRoute exact path="/members" component={Members} /> */}
+          <PrivateRoute exact path="/MyData" component={MyData} />
+         {/* <PrivateRoute exact path="/table" component={TablePage} /> */}
+          <Route component={NoMatch} />
+        </Switch>
+      </Router>
+    
+  )
 };
+export default () => (
+  <AuthProvider>
+    <App/>
+  </AuthProvider>
+);

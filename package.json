@@ -6,19 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "build": "react-scripts build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+   "predeploy": "npm run build",
+  "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kylewhittemore/react-sequelize-template.git"
+    "url": "git+https://github.com/smiro35/react-sequelize-template.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kylewhittemore/react-sequelize-template/issues"
+    "url": "https://github.com/smiro35/react-sequelize-template.git/issues"
   },
-  "homepage": "https://github.com/kylewhittemore/react-sequelize-template#readme",
+  "homepage": "https://github.com/smiro35/react-sequelize-template.git#readme",
   "dependencies": {
     "axios": "^0.19.1",
     "bcryptjs": "^2.4.3",
@@ -27,6 +30,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "gh-pages": "^2.2.0",
     "morgan": "^1.9.1",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
@@ -44,3 +48,7 @@
     "eslint-plugin-react-hooks": "^1.7.0"
   }
 }
+
+
+
+ 

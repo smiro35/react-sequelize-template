@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect } from 'react';
 import Axios from 'axios'
 import { Redirect } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false)
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         checkAuth()
@@ -16,20 +17,23 @@ export const AuthProvider = ({ children }) => {
             .then(response => {
                 if (response.data.email) {
                     setIsAuth(true)
+                    setUser(response.data)
                 } else {
                     setIsAuth(false)
                 }
             })
+            .catch(err => console.log("Error"))
     }
 
     const logout = async () => {
         Axios.get("/api/auth/logout")
-          .then(() => {
-            setIsAuth(false);
-            return <Redirect to='/' />
-          })
-          .catch(err => console.log(err));
-      };
+            .then(() => {
+                setIsAuth(false);
+                setUser({})
+                return <Redirect to='/' />
+            })
+            .catch(err => console.log(err));
+    };
 
-    return <AuthContext.Provider value={{ isAuth, setIsAuth, checkAuth, logout }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ isAuth, setIsAuth, user, setUser, checkAuth, logout }}>{children}</AuthContext.Provider>;
 };
